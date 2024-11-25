@@ -16,6 +16,8 @@
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@mui/material-nextjs": "latest",
+    "gray-matter": "^4.0.3",
+    "markdown-to-jsx": "^7.7.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"

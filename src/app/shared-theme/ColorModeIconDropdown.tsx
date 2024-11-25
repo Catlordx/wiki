@@ -10,38 +10,37 @@ import { useColorScheme } from '@mui/material/styles';
 export default function ColorModeIconDropdown(props: IconButtonOwnProps) {
   const { mode, systemMode, setMode } = useColorScheme();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [mounted, setMounted] = React.useState(false);
   const open = Boolean(anchorEl);
+  
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleMode = (targetMode: 'system' | 'light' | 'dark') => () => {
     setMode(targetMode);
     handleClose();
   };
-  if (!mode) {
-    return (
-      <Box
-        data-screenshot="toggle-mode"
-        sx={(theme) => ({
-          verticalAlign: 'bottom',
-          display: 'inline-flex',
-          width: '2.25rem',
-          height: '2.25rem',
-          borderRadius: (theme.vars || theme).shape.borderRadius,
-          border: '1px solid',
-          borderColor: (theme.vars || theme).palette.divider,
-        })}
-      />
-    );
+
+  // 等待客户端挂载完成
+  if (!mounted) {
+    return null;
   }
+
   const resolvedMode = (systemMode || mode) as 'light' | 'dark';
   const icon = {
     light: <LightModeIcon />,
     dark: <DarkModeIcon />,
   }[resolvedMode];
+
   return (
     <React.Fragment>
       <IconButton
@@ -66,9 +65,7 @@ export default function ColorModeIconDropdown(props: IconButtonOwnProps) {
           paper: {
             variant: 'outlined',
             elevation: 0,
-            sx: {
-              my: '4px',
-            },
+            sx: { my: '4px' },
           },
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
